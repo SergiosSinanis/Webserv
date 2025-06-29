@@ -61,12 +61,13 @@ Webserv is developed as a team project with [Matthieu Manuellan](https://github.
 - max_connections: Concurrent client limits
 
 ## Usage Examples
-
+```
 ### Server initialization
 
 bash./webserv config/webserv.conf
 
 ### POST with JSON payload
+
 curl -X POST -H "Content-Type: application/json" \
      -d '{"name":"John","email":"john@example.com"}' \
      http://localhost:8080/api/users
@@ -84,6 +85,6 @@ curl http://localhost:8080/scripts/process.php?action=login
 
 ### Bash system monitoring
 curl http://localhost:8080/shell/system-status.sh
-
+```
 ## Implementation Notes
 This web server implementation follows C++98 standards with focus on clean code architecture and reliable performance. The project emphasizes practical understanding of HTTP/1.1 protocol, socket programming with select(), and proper resource management. All network operations are handled through non-blocking I/O to support multiple simultaneous client connections efficiently.
