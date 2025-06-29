@@ -61,29 +61,32 @@ Webserv is developed as a team project with [Matthieu Manuellan](https://github.
 - max_connections: Concurrent client limits
 
 ## Usage Examples
-```
+
 ### Server initialization
-
+```
 bash./webserv config/webserv.conf
-
+```
 ### POST with JSON payload
-
+```
 curl -X POST -H "Content-Type: application/json" \
      -d '{"name":"John","email":"john@example.com"}' \
      http://localhost:8080/api/users
-
+```
 ### PUT request for updates
+```
 curl -X PUT -H "Content-Type: application/json" \
      -d '{"name":"Jane Doe"}' \
      http://localhost:8080/api/users/1
-
+```
 ### DELETE operation
+```
 curl -X DELETE http://localhost:8080/api/users/1
 CGI script execution
 bash# PHP processing
 curl http://localhost:8080/scripts/process.php?action=login
-
+```
 ### Bash system monitoring
+```
 curl http://localhost:8080/shell/system-status.sh
 ```
 ## Implementation Notes
