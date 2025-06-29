@@ -9,56 +9,56 @@ Webserv is developed as a team project with [Matthieu Manuellan](https://github.
 
 ### HTTP Method Support
 
-Complete HTTP method implementation (GET, POST, DELETE, PUT, HEAD, PATCH)
-RESTful API endpoint handling
-JSON response formatting
-Proper HTTP status code responses
+- Complete HTTP method implementation (GET, POST, DELETE, PUT, HEAD, PATCH)
+- RESTful API endpoint handling
+- JSON response formatting
+- Proper HTTP status code responses
 
 ### Session & Cookie Management
 
-Cookie-based session tracking
-Session token generation and validation
-Session timeout handling
-Client state persistence
+- Cookie-based session tracking
+- Session token generation and validation
+- Session timeout handling
+- Client state persistence
 
 ### CGI Script Processing
 
-PHP script execution support
-Python CGI implementation
-Shell/Bash script processing
-Environment variable management for CGI
+- PHP script execution support
+- Python CGI implementation
+- Shell/Bash script processing
+- Environment variable management for CGI
 
 ### Core Server Features
 
-Static file serving
-Multiple concurrent connections via select()
-Custom error page handling
-Request timeout management
+- Static file serving
+- Multiple concurrent connections via select()
+- Custom error page handling
+- Request timeout management
 
 ### I/O & Connection Handling
 
-Non-blocking socket operations
-select() based multiplexing
-Concurrent client request processing
-Efficient memory management
+- Non-blocking socket operations
+- select() based multiplexing
+- Concurrent client request processing
+- Efficient memory management
 
 ### Core Server Capabilities
 
-Multi-domain virtual hosting
-Flexible routing configuration
-Static asset optimization
-Real-time error handling
-Custom middleware support
+- Multi-domain virtual hosting
+- Flexible routing configuration
+- Static asset optimization
+- Real-time error handling
+- Custom middleware support
 
 ### Configuration Options
 
-server: Virtual server block definition
-listen: Network binding and port configuration
-root: Document directory specification
-location: URL pattern matching and handling
-cgi_pass: Script interpreter routing
-session_timeout: Session lifecycle management
-max_connections: Concurrent client limits
+- server: Virtual server block definition
+- listen: Network binding and port configuration
+- root: Document directory specification
+- location: URL pattern matching and handling
+- cgi_pass: Script interpreter routing
+- session_timeout: Session lifecycle management
+- max_connections: Concurrent client limits
 
 ## Usage Examples
 
