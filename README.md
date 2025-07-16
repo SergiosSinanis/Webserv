@@ -1,32 +1,39 @@
 # Webserv
 
-Webserv is an HTTP/1.1 web server built from scratch, inspired by nginx architecture. This project demonstrates core network programming concepts, including socket management, HTTP/1.1 protocol implementation, and concurrent request handling using standard multiplexing.
+A fully-featured HTTP/1.1 web server built from scratch in C++98, inspired by nginx architecture. This project demonstrates advanced network programming concepts including socket management, HTTP/1.1 protocol implementation, and high-performance concurrent request handling using non-blocking I/O and multiplexing.
 
 ## Authors
-Webserv is developed as a team project with [Matthieu Manuellan](https://github.com/JVlatt) and [Nadia Galleze](https://github.com/Nadzg), aimed at understanding network programming fundamentals and web server architecture.
+Webserv is developed as a collaborative team project with [Matthieu Manuellan](https://github.com/JVlatt) and [Nadia Galleze](https://github.com/Nadzg), showcasing deep understanding of network programming fundamentals, web server architecture, and full-stack web development.
 
 ## Key Features
 
-### HTTP Method Support
+### Complete HTTP/1.1 Implementation
 
-- Complete HTTP method implementation (GET, POST, DELETE, PUT, HEAD, PATCH)
-- RESTful API endpoint handling
-- JSON response formatting
-- Proper HTTP status code responses
+- Full HTTP Method Support: GET, POST, DELETE, PUT, HEAD, PATCH
+- RESTful API Architecture: Clean endpoint design with proper routing
+- Data Transfer: Chunked encoding for large payloads
+- JSON Response Formatting: Structured data exchange
+- Comprehensive Status Codes: Proper HTTP status code responses
+- Concurrent Connections: Up to 1024 simultaneous clients
+- Content-Type Handling: Support for various MIME types
+- Testing: Thoroughly tested with various clients (curl, netcat, browsers)
 
-### Session & Cookie Management
+### Session & Authentication System
 
-- Cookie-based session tracking
-- Session token generation and validation
-- Session timeout handling
-- Client state persistence
+- Cookie-Based Session Management: Secure session tracking
+- User Registration & Authentication: Username, email, password system
+- Session Token Generation: Using secure tokens
+- Session Timeout Handling: Isolated session management
+- Persistent Client State: Reliable state management across requests
 
-### CGI Script Processing
+### Multi-CGI Script Processing
 
-- PHP script execution support
-- Python CGI implementation
-- Shell/Bash script processing
-- Environment variable management for CGI
+- Separate CGI environments
+- PHP Script Execution: Full PHP CGI support
+- Python CGI Implementation: Python script processing
+- Shell/Bash Script Processing: System script execution
+- Environment Variable Management: Proper CGI environment setup
+- Multiple Script Support: Concurrent CGI processing
 
 ### Core Server Features
 
@@ -35,59 +42,67 @@ Webserv is developed as a team project with [Matthieu Manuellan](https://github.
 - Custom error page handling
 - Request timeout management
 
-### I/O & Connection Handling
+### High-Performance Server Architecture
 
-- Non-blocking socket operations
-- select() based multiplexing
+- Non-Blocking I/O: Fully asynchronous operations
+- select() Multiplexing: Efficient concurrent connection handling
+- Chunked Data Transfer: CHUNK_SIZE configurable for optimal performance
+- FD_SETSIZE Support: Handle up to 1024 concurrent clients
 - Concurrent client request processing
-- Efficient memory management
+- Memory Leak Free: Efficient memory management
+- Zero-Copy Operations: Optimized data handling without unnecessary buffering
+  
+### User Management & File Handling
 
-### Core Server Capabilities
+- User Registration System: Complete signup/login workflow
+- Profile Photo Management: Upload, replace, delete profile pictures
+- User Information Updates: Edit profile functionality
+- File Upload Handling: File processing with size limits
+- Image Processing: Profile photo handling and validation
 
-- Multi-domain virtual hosting
-- Flexible routing configuration
-- Static asset optimization
-- Real-time error handling
-- Custom middleware support
+### Interactive Web Applications
 
-### Configuration Options
+- Calculator Application: Built-in mathematical calculator
+- Timezone Calculator: Time zone conversion utility
+- User Interface: Clean, responsive web interface
+
+### Multi-Domain Virtual Hosting
+
+- Virtual Server Blocks: Multiple website hosting
+- Independent document roots
+- Static Asset Optimization: Efficient static file serving
+- Custom Error Pages: Real-time error handling
+- Middleware Support: Extensible request processing
+
+### Core Server Configuration Options
 
 - server: Virtual server block definition
 - listen: Network binding and port configuration
 - root: Document directory specification
-- location: URL pattern matching and handling
+- location: URL pattern matching and handling (here localhost for debugging purposes)
 - cgi_pass: Script interpreter routing
 - session_timeout: Session lifecycle management
-- max_connections: Concurrent client limits
+- methods: Allowed HTTP methods per location
+- index: Default directory index files
 
 ## Usage Examples
 
 ### Server initialization
 ```
-bash./webserv config/webserv.conf
+make
+./webserv <config_file>
+# access in browser
+http://localhost:<port>
 ```
-### POST with JSON payload
-```
-curl -X POST -H "Content-Type: application/json" \
-     -d '{"name":"John","email":"john@example.com"}' \
-     http://localhost:8080/api/users
-```
-### PUT request for updates
-```
-curl -X PUT -H "Content-Type: application/json" \
-     -d '{"name":"Jane Doe"}' \
-     http://localhost:8080/api/users/1
-```
-### DELETE operation
-```
-curl -X DELETE http://localhost:8080/api/users/1
-CGI script execution
-bash# PHP processing
-curl http://localhost:8080/scripts/process.php?action=login
-```
-### Bash system monitoring
-```
-curl http://localhost:8080/shell/system-status.sh
-```
+The project includes four pre-configured test scenarios to demonstrate various server capabilities. You can also create your own configuration files using familiar nginx-style syntax and format.
+
+### Development & Debugging
+The server includes terminal logging output for development purposes (some in comments):
+
+- Request logging and processing details
+- Connection management information
+- CGI execution status
+- Error tracking and debugging info
+
 ## Implementation Notes
-This web server implementation follows C++98 standards with focus on clean code architecture and reliable performance. The project emphasizes practical understanding of HTTP/1.1 protocol, socket programming with select(), and proper resource management. All network operations are handled through non-blocking I/O to support multiple simultaneous client connections efficiently.
+This implementation focuses on educational purposes and demonstrates professional-grade web server development using C++98 standards. The project emphasizes practical understanding of HTTP/1.1 protocol, advanced socket programming, and efficient resource management in a concurrent environment.
