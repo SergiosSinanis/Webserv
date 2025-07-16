@@ -91,7 +91,7 @@ Webserv is developed as a collaborative team project with [Matthieu Manuellan](h
 ```
 make
 ./webserv <config_file>
-# access in browser
+# access in browser 
 http://localhost:<port>
 ```
 The project includes four pre-configured test scenarios to demonstrate various server capabilities. You can also create your own configuration files using familiar nginx-style syntax and format.
