@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal Web Server - Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>USER AUTHENTICATION</h1>
+            <div class="subtitle">Login to Access System</div>
+        </div>
+
+        <div class="form-container">
+            <form action="/cgi-bin/login.py" method="post">
+                <div class="ascii-art">
+┌─────────────────────────┐
+│      LOGIN TERMINAL     │
+└─────────────────────────┘
+                </div>
+
+                <div class="form-group">
+                    <label for="username">> USERNAME:</label>
+                    <input type="text" id="username" name="username" required placeholder="Enter your username">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">> PASSWORD:</label>
+                    <input type="password" id="password" name="password" required placeholder="Enter your password">
+                </div>
+
+                <button type="submit" class="btn">[AUTHENTICATE]</button>
+                <button type="reset" class="btn">[CLEAR]</button>
+            </form>
+        </div>
+
+        <div class="message">
+            <p>> Enter your credentials to access the system</p>
+            <p>> All sessions are logged for security purposes</p>
+        </div>
+
+        <div class="navigation">
+            <a href="/">[BACK TO MAIN]</a>
+            <a href="signup.html">[NEW USER REGISTRATION]</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal Web Server - Sign Up</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>USER REGISTRATION</h1>
+            <div class="subtitle">Create New Account</div>
+        </div>
+
+        <div class="form-container">
+            <form action="/cgi-bin/signup.py" method="post">
+                <div class="ascii-art">
+┌─────────────────────────┐
+│   REGISTRATION SYSTEM   │
+└─────────────────────────┘
+                </div>
+
+                <div class="form-group">
+                    <label for="new-username">> CHOOSE USERNAME:</label>
+                    <input type="text" id="new-username" name="username" required placeholder="Enter desired username">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">> EMAIL ADDRESS:</label>
+                    <input type="email" id="email" name="email" required placeholder="Enter your email">
+                </div>
+
+                <div class="form-group">
+                    <label for="new-password">> CHOOSE PASSWORD:</label>
+                    <input type="password" id="new-password" name="password" required placeholder="Enter secure password">
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password">> CONFIRM PASSWORD:</label>
+                    <input type="password" id="confirm-password" name="confirm-password" required placeholder="Confirm your password">
+                </div>
+
+                <button type="submit" class="btn">[CREATE ACCOUNT]</button>
+                <button type="reset" class="btn">[CLEAR FORM]</button>
+            </form>
+        </div>
+
+        <div class="navigation">
+            <a href="/">[BACK TO MAIN]</a>
+            <a href="../cgi-bin/try_login.sh">[EXISTING USER LOGIN]</a>
+        </div>
+    </div>
+</body>
+</html>

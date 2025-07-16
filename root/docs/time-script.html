@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal Web Server - Time Server CGI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>TIME SERVER CGI SCRIPT</h1>
+            <div class="subtitle">Server Time and Date Information</div>
+        </div>
+
+        <div class="ascii-art">
+┌──────────────────────────────┐
+│         TIME TERMINAL        │
+│    ┌─────────────────────┐   │
+│    │  [HH:MM:SS]         │   │
+│    │  [DD/MM/YYYY]       │   │
+│    └─────────────────────┘   │
+└──────────────────────────────┘
+        </div>
+
+        <div class="message success">
+            <p>> Server Time: <span id="server-time"></span></p>
+            <p>> Server Date: <span id="server-date"></span></p>
+            <p>> Timezone: <span id="timezone"></span></p>
+        </div>
+
+        <div class="form-container">
+            <h3>TIME ZONE CONVERTER</h3>
+            <div class="form-group">
+                <label for="timezone-select">> SELECT TIMEZONE:</label>
+                <select id="timezone-select" class="btn" onchange="updateTimezone()">
+                    <option value="UTC">UTC</option>
+                    <option value="EST">Eastern Time</option>
+                    <option value="PST">Pacific Time</option>
+                    <option value="GMT">Greenwich Mean Time</option>
+                    <option value="CET">Central European Time</option>
+                </select>
+            </div>
+            <div class="message">
+                <p id="converted-time">> Converted Time: --:--:--</p>
+            </div>
+        </div>
+
+        <div class="message">
+            <p>> CGI Script: time_server.py</p>
+            <p>> Last execution: <span id="last-execution"></span></p>
+            <p>> Script status: ACTIVE</p>
+        </div>
+
+        <div class="navigation">
+            <a href="apps.html">[BACK TO CGI MENU]</a>
+            <a href="dashboard.html">[DASHBOARD]</a>
+            <form action="/logout" method="POST" style="display:inline;">
+                <button type="submit" class="link-button">[LOGOUT]</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('server-time').textContent = now.toLocaleTimeString();
+            document.getElementById('server-date').textContent = now.toLocaleDateString();
+            document.getElementById('timezone').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            document.getElementById('last-execution').textContent = now.toLocaleString();
+
+            // optional for uptime
+            const uptime = Math.floor(Math.random() * 1000) + 100;
+            document.getElementById('uptime').textContent = `${uptime} hours`;
+        }
+
+        function updateTimezone() {
+            const select = document.getElementById('timezone-select');
+            const convertedTime = document.getElementById('converted-time');
+            const now = new Date();
+
+            convertedTime.textContent = `> Converted Time (${select.value}): ${now.toLocaleTimeString()}`;
+        }
+
+        // update time every second
+        setInterval(updateTime, 1000);
+        updateTime(); // initial call
+    </script>
+</body>
+</html>

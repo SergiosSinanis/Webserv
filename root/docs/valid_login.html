@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Success</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>ACCESS GRANTED</h1>
+        <div class="subtitle">Welcome back, <span id="username">user</span>!</div>
+    </div>
+
+    <div class="ascii-art">
+        ╔══════════════════════════════╗
+        ║      AUTHENTICATION OK       ║
+        ╚══════════════════════════════╝
+    </div>
+
+    <div class="message success">
+        <p>> Login successful.</p>
+        <p>> Session started: <span id="current-time"></span></p>
+    </div>
+
+    <div class="navigation">
+        <a href="dashboard.html">[ACCESS DASHBOARD]</a>
+        <form action="/logout" method="POST" style="display:inline;">
+            <button type="submit" class="link-button">[LOGOUT]</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('current-time').textContent = new Date().toLocaleString();
+    fetch("/cgi-bin/get_username.php")
+          .then(res => res.json())
+          .then(data => {
+            if (data.username) {
+              document.getElementById("username").textContent = data.username;
+            } else {
+              window.location.href = "/docs/logged-out.html";
+            }
+          });
+</script>
+</body>
+</html>

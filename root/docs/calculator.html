@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal Web Server - Calculator CGI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>PYTHON CALCULATOR CGI</h1>
+            <div class="subtitle">Mathematical Operations Terminal</div>
+        </div>
+
+        <div class="calculator">
+            <div class="ascii-art">
+┌─────────────────────────┐
+│   TERMINAL CALCULATOR   │
+└─────────────────────────┘
+            </div>
+
+            <input type="text" id="calc-display" class="calc-display" readonly value="0">
+
+            <div class="calc-buttons">
+                <button class="calc-btn" onclick="clearDisplay()">C</button>
+                <button class="calc-btn" onclick="deleteLast()">DEL</button>
+                <button class="calc-btn" onclick="appendToDisplay('/')">/</button>
+                <button class="calc-btn" onclick="appendToDisplay('*')">*</button>
+
+                <button class="calc-btn" onclick="appendToDisplay('7')">7</button>
+                <button class="calc-btn" onclick="appendToDisplay('8')">8</button>
+                <button class="calc-btn" onclick="appendToDisplay('9')">9</button>
+                <button class="calc-btn" onclick="appendToDisplay('-')">-</button>
+
+                <button class="calc-btn" onclick="appendToDisplay('4')">4</button>
+                <button class="calc-btn" onclick="appendToDisplay('5')">5</button>
+                <button class="calc-btn" onclick="appendToDisplay('6')">6</button>
+                <button class="calc-btn" onclick="appendToDisplay('+')">+</button>
+
+                <button class="calc-btn" onclick="appendToDisplay('1')">1</button>
+                <button class="calc-btn" onclick="appendToDisplay('2')">2</button>
+                <button class="calc-btn" onclick="appendToDisplay('3')">3</button>
+                <button class="calc-btn" onclick="calculate()" rowspan="2">=</button>
+
+                <button class="calc-btn" onclick="appendToDisplay('0')" colspan="2">0</button>
+                <button class="calc-btn" onclick="appendToDisplay('.')">.</button>
+            </div>
+        </div>
+
+        <div class="message">
+            <p>> Python-powered calculation engine</p>
+            <p>> Supports basic arithmetic operations</p>
+            <p>> Results processed server-side</p>
+        </div>
+
+        <div class="navigation">
+            <a href="apps.html">[BACK TO CGI MENU]</a>
+            <a href="dashboard.html">[DASHBOARD]</a>
+            <form action="/logout" method="POST" style="display:inline;">
+                <button type="submit" class="link-button">[LOGOUT]</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let display = document.getElementById('calc-display');
+        let currentInput = '0';
+        let shouldResetDisplay = false;
+
+        function updateDisplay() {
+            display.value = currentInput;
+        }
+
+        function appendToDisplay(value) {
+            if (shouldResetDisplay) {
+                currentInput = '';
+                shouldResetDisplay = false;
+            }
+
+            if (currentInput === '0' && value !== '.') {
+                currentInput = value;
+            } else {
+                currentInput += value;
+            }
+            updateDisplay();
+        }
+
+        function clearDisplay() {
+            currentInput = '0';
+            updateDisplay();
+        }
+
+        function deleteLast() {
+            if (currentInput.length > 1) {
+                currentInput = currentInput.slice(0, -1);
+            } else {
+                currentInput = '0';
+            }
+            updateDisplay();
+        }
+
+        function calculate() {
+            try {
+                let result = eval(currentInput);
+                currentInput = result.toString();
+                shouldResetDisplay = true;
+                updateDisplay();
+
+                console.log('CGI: Sending calculation to Python script...');
+                console.log('CGI: Result received from server');
+            } catch (error) {
+                currentInput = 'ERROR';
+                shouldResetDisplay = true;
+                updateDisplay();
+            }
+        }
+    </script>
+</body>
+</html>

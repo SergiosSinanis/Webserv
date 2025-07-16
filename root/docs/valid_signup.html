@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Signup Success</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>ACCOUNT CREATED</h1>
+        <div class="subtitle">Welcome, <span id="username">new user</span>!</div>
+    </div>
+
+    <div class="ascii-art">
+        ╔════════════════════════════╗
+        ║     REGISTRATION SUCCESS   ║
+        ╚════════════════════════════╝
+    </div>
+
+    <div class="message success">
+        <p>> Your account has been successfully created.</p>
+    </div>
+
+    <div class="navigation">
+        <a href="../">[BACK TO MENU]</a>
+        <a href="../cgi-bin/try_login.sh">[LOGIN NOW]</a>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const user = urlParams.get('username');
+        if (user) document.getElementById('username').textContent = user;
+    </script>
+</div>
+</body>
+</html>

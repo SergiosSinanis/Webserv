@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Server - Session Terminated</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>SESSION TERMINATED</h1>
+            <div class="subtitle">You have been logged out</div>
+        </div>
+
+        <div class="ascii-art">
+╔═══════════════════════════════╗
+║        SESSION EXPIRED        ║
+║                               ║
+║         ⚠  WARNING  ⚠         ║
+║                               ║
+║      CONNECTION CLOSED        ║
+╚═══════════════════════════════╝
+        </div>
+
+        <div class="message error">
+            <p>> Session Status: TERMINATED</p>
+            <p>> Reason: Inactivity timeout detected</p>
+            <p>> All user data has been secured</p>
+        </div>
+
+        <div class="form-container">
+            <div class="ascii-art">
+┌───────────────────────┐
+│    LOGOUT COMPLETE    │
+│         ✓ ✓ ✓         │
+│   SESSION CLEARED     │
+└───────────────────────┘
+            </div>
+
+            <div class="message">
+                <p>> Your session has been safely terminated</p>
+                <p>> For security reasons, you have been logged out</p>
+                <p>> Please log in again to continue using the system</p>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <h3>RETURN TO SYSTEM</h3>
+            <div style="text-align: center; margin: 20px 0;">
+                <a href="/" class="btn">[RETURN TO MAIN MENU]</a>
+            </div>
+        </div>
+
+        <div class="message">
+            <p>> System Security: All sessions are monitored</p>
+            <p>> Automatic logout after 30 minutes of inactivity</p>
+            <p>> Thank you for using the system securely</p>
+        </div>
+
+        <div class="navigation">
+            <a href="/">[BACK TO MAIN]</a>
+            <a href="../cgi-bin/try_login.sh">[NEW LOGIN]</a>
+        </div>
+    </div>
+</body>
+</html>

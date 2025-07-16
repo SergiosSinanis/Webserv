@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Server - Applications</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>APPLICATIONS</h1>
+            <div class="subtitle">Server-Side Script Execution</div>
+        </div>
+
+        <div class="ascii-art">
+┌────────────────────────────┐
+│        APPLICATIONS        │
+│     ┌──────┐ ┌──────┐      │
+│     │ CALC │ │ TIME │      │
+│     └──────┘ └──────┘      │
+└────────────────────────────┘
+        </div>
+
+        <div class="message">
+            <p>> Available CGI Scripts: 3</p>
+            <p>> Execution environment: Python/Shell</p>
+            <p>> Security level: Sandboxed</p>
+        </div>
+
+        <ul class="menu">
+            <li><a href="calculator.html">[1] CALCULATOR - Python-based mathematical calculator</a></li>
+            <li><a href="time-script.html">[2] TIME SERVER - Display current server time and date</a></li>
+        </ul>
+
+        <div class="message">
+            <p>> All scripts run in a secure environment</p>
+            <p>> Execution logs are maintained for debugging</p>
+            <p>> Scripts are compatible with HTTP/1.1 protocol</p>
+        </div>
+
+        <div class="navigation">
+            <a href="dashboard.html">[BACK TO DASHBOARD]</a>
+            <form action="/logout" method="POST" style="display:inline;">
+                <button type="submit" class="link-button">[LOGOUT]</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

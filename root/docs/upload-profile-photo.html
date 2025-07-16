@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Server - Profile Photo Upload</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>PROFILE PHOTO UPLOAD SYSTEM</h1>
+            <div class="subtitle">Upload Your Profile Photo</div>
+        </div>
+
+        <div class="form-container">
+            <div class="ascii-art">
+┌───────────────────────┐
+│     PHOTO UPLOADER    │
+│    ┌─────────────┐    │
+│    │ SELECT FILE │    │
+│    └─────────────┘    │
+└───────────────────────┘
+            </div>
+
+            <form id="upload-form" method="post" action="/Uploads" enctype="multipart/form-data">
+
+                <input type="hidden" id="savename" name="savename" value="">
+
+                <div class="form-group">
+                    <label for="photo-upload">> SELECT PROFILE PHOTO:</label>
+                    <input type="file" id="photo-upload" name="photo" accept="image/*" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="photo-description">> PHOTO DESCRIPTION (Optional):</label>
+                    <input type="text" id="photo-description" name="description" placeholder="Enter photo description">
+                </div>
+
+                <input type="hidden" id="username" name="username" value="">
+
+                <button type="submit" class="btn">[UPLOAD PHOTO]</button>
+                <button type="reset" class="btn">[CLEAR]</button>
+            </form>
+        </div>
+
+        <div class="message">
+            <p>> Supported formats: JPG, PNG, GIF, WEBP</p>
+            <p>> Only one profile photo allowed</p>
+            <p>> New uploads will replace existing photo</p>
+        </div>
+
+        <div class="navigation">
+            <a href="dashboard.html">[BACK TO DASHBOARD]</a>
+            <a href="profile-preview.html">[VIEW PROFILE PHOTO]</a>
+            <form action="/logout" method="POST" style="display:inline;">
+                <button type="submit" class="link-button">[LOGOUT]</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        const form = document.getElementById("upload-form");
+
+        form.addEventListener("submit", async function (e) {
+            e.preventDefault(); // stop default submission
+
+            try {
+                const res = await fetch("/cgi-bin/get_username.php");
+                const data = await res.json();
+
+                if (data.username) {
+                    document.getElementById("savename").value = "profile_" + data.username;
+                    form.submit(); // now submit with updated fields
+                } else {
+                    window.location.href = "/docs/logged-out.html";
+                }
+            } catch (err) {
+                console.error("Fetch failed:", err);
+                window.location.href = "/docs/logged-out.html";
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Server - Profile Photo Preview</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .photo-preview {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .photo-frame {
+            border: 2px solid #00ff00;
+            padding: 10px;
+            background-color: #002200;
+            display: inline-block;
+            margin: 10px;
+        }
+
+        .photo-placeholder {
+            width: 300px;
+            height: 300px;
+            border: 1px dashed #00ff00;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #001100;
+            color: #00aa00;
+            font-size: 12px;
+        }
+
+        .photo-image {
+            max-width: 300px;
+            max-height: 300px;
+            border: 1px solid #00ff00;
+        }
+
+        .action-buttons {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .action-buttons .btn {
+            margin: 5px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>PROFILE PHOTO PREVIEW</h1>
+            <div class="subtitle">View, Delete or Replace Your Profile Photo</div>
+        </div>
+
+        <div class="ascii-art">
+┌───────────────────────────────┐
+│         PHOTO PREVIEW         │
+│    ┌─────────────────────┐    │
+│    │                     │    │
+│    │     [PHOTO VIEW]    │    │
+│    │                     │    │
+│    └─────────────────────┘    │
+└───────────────────────────────┘
+        </div>
+
+        <div class="photo-preview">
+            <div class="photo-frame">
+                <!-- NO PHOTO STATE -->
+                <div id="no-photo-placeholder" class="photo-placeholder">
+                    NO PROFILE PHOTO<br>
+                    UPLOAD ONE TO VIEW
+                </div>
+
+                <!-- PHOTO EXISTS STATE -->
+                <img id="profile-image" src="" alt="Profile Photo" class="photo-image hidden">
+            </div>
+        </div>
+
+        <!-- NO PHOTO MESSAGE -->
+        <div id="no-photo-message" class="message">
+            <p>> Photo Status: NO PHOTO UPLOADED</p>
+            <p>> Upload a profile photo to preview it here</p>
+        </div>
+
+        <!-- PHOTO EXISTS MESSAGE -->
+        <div id="photo-info" class="message success hidden">
+            <p>> Photo: <span id="photo-filename"></span> (<span id="photo-size"></span>)</p>
+            <p>> Uploaded: <span id="photo-date"></span></p>
+            <p>> Dimensions: <span id="photo-dimensions"></span> pixels</p>
+            <p>> Format: <span id="photo-format"></span></p>
+        </div>
+
+        <!-- PHOTO ACTIONS -->
+        <div id="photo-actions" class="form-container hidden">
+            <h3>PHOTO ACTIONS</h3>
+            <div class="action-buttons">
+                <button class="btn" onclick="Delete()">[DELETE PHOTO]</button>
+            </div>
+        </div>
+
+        <!-- REPLACE PHOTO FORM -->
+        <div id="replace-form" class="form-container hidden">
+            <h3>REPLACE PHOTO</h3>
+            <form id="rep" action="/Uploads" method="post" enctype="multipart/form-data">
+
+                <input type="hidden" id="savename" name="savename" value="">
+
+                <div class="form-group">
+                    <label for="new-photo">> SELECT NEW PHOTO:</label>
+                    <input type="file" id="new-photo" name="photo" accept="image/*" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="new-description">> NEW DESCRIPTION (Optional):</label>
+                    <input type="text" id="new-description" name="description" placeholder="Enter new description">
+                </div>
+
+                <button type="submit" class="btn">[REPLACE PHOTO]</button>
+            </form>
+        </div>
+
+        <div class="navigation">
+            <a href="upload-profile-photo.html">[UPLOAD PHOTO]</a>
+            <a href="dashboard.html">[BACK TO DASHBOARD]</a>
+            <form action="/logout" method="POST" style="display:inline;">
+                <button type="submit" class="link-button">[LOGOUT]</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ====================PREVIEW=========== -->
+
+    <script>
+        async function getUserId() {
+            try {
+                const res = await fetch("/cgi-bin/get_username.php");
+                const data = await res.json();
+
+                if (data.username) {
+                    return data.username;
+                } else {
+                    window.location.href = "/docs/logged-out.html";
+                }
+            } catch (err) {
+                console.error("Fetch failed:", err);
+                window.location.href = "/docs/logged-out.html";
+            }
+        }
+
+        async function checkProfilePhoto() {
+            const userId = await getUserId();
+            const extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+
+            for (const ext of extensions) {
+                const photoUrl = `/Uploads/profile_${userId}.${ext}`;
+
+                try {
+                    const response = await fetch(photoUrl, { method: 'GET' });
+                    if (response.ok) {
+                        return {
+                            exists: true,
+                            url: photoUrl,
+                            filename: `profile_${userId}.${ext}`,
+                            format: ext.toUpperCase()
+                        };
+                    }
+                } catch (error) {
+                    console.error(`Error checking ${photoUrl}:`, error);
+                }
+            }
+
+            return { exists: false };
+        }
+
+        async function getPhotoInfo(photoUrl) {
+            try {
+                const response = await fetch(photoUrl);
+                const blob = await response.blob();
+
+                const sizeInBytes = blob.size;
+                const sizeStr = sizeInBytes < 1024 * 1024
+                    ? `${Math.round(sizeInBytes / 1024)}KB`
+                    : `${Math.round(sizeInBytes / (1024 * 1024))}MB`;
+
+                return new Promise((resolve) => {
+                    const img = new Image();
+                    img.onload = function () {
+                        resolve({
+                            size: sizeStr,
+                            dimensions: `${this.width}x${this.height}`,
+                            date: new Date().toLocaleString()
+                        });
+                    };
+                    img.src = photoUrl;
+                });
+            } catch (error) {
+                return {
+                    size: 'Unknown',
+                    dimensions: 'Unknown',
+                    date: 'Unknown'
+                };
+            }
+        }
+
+        async function showPhotoExists(photoData) {
+            const photoInfo = await getPhotoInfo(photoData.url);
+
+            document.getElementById('no-photo-placeholder').classList.add('hidden');
+            document.getElementById('no-photo-message').classList.add('hidden');
+
+            const profileImage = document.getElementById('profile-image');
+            profileImage.src = photoData.url;
+            profileImage.classList.remove('hidden');
+
+            document.getElementById('photo-filename').textContent = photoData.filename;
+            document.getElementById('photo-size').textContent = photoInfo.size;
+            document.getElementById('photo-date').textContent = photoInfo.date;
+            document.getElementById('photo-dimensions').textContent = photoInfo.dimensions;
+            document.getElementById('photo-format').textContent = photoData.format;
+
+            document.getElementById('photo-info').classList.remove('hidden');
+            document.getElementById('photo-actions').classList.remove('hidden');
+            document.getElementById('replace-form').classList.remove('hidden');
+        }
+
+        function showNoPhoto() {
+            document.getElementById('no-photo-placeholder').classList.remove('hidden');
+            document.getElementById('no-photo-message').classList.remove('hidden');
+
+            document.getElementById('profile-image').classList.add('hidden');
+            document.getElementById('photo-info').classList.add('hidden');
+            document.getElementById('photo-actions').classList.add('hidden');
+            document.getElementById('replace-form').classList.add('hidden');
+        }
+
+        async function initializePage() {
+            const photoData = await checkProfilePhoto();
+
+            if (photoData.exists) {
+                await showPhotoExists(photoData);
+            } else {
+                showNoPhoto();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+
+    <!-- ====================UPDATE=========== -->
+
+    <script>
+        const form = document.getElementById("rep");
+
+        form.addEventListener("submit", async function (e) {
+            e.preventDefault(); // stop default submission
+
+            try {
+                const res = await fetch("/cgi-bin/get_username.php");
+                const data = await res.json();
+
+                if (data.username) {
+                    document.getElementById("savename").value = "profile_" + data.username;
+                    form.submit(); // now submit with updated fields
+                } else {
+                    window.location.href = "/docs/logged-out.html";
+                }
+            } catch (err) {
+                console.error("Fetch failed:", err);
+                window.location.href = "/docs/logged-out.html";
+            }
+        });
+    </script>
+
+    <!-- ====================DELETE=========== -->
+
+    <script>
+        async function getUserId() {
+            try {
+                const res = await fetch("/cgi-bin/get_username.php");
+                const data = await res.json();
+
+                if (data.username) {
+                    return data.username;
+                } else {
+                    window.location.href = "/docs/logged-out.html";
+                }
+            } catch (err) {
+                console.error("Fetch failed:", err);
+                window.location.href = "/docs/logged-out.html";
+            }
+        }
+
+        async function checkProfilePhoto() {
+            const userId = await getUserId();
+            const extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+
+            for (const ext of extensions) {
+                const photoUrl = `/Uploads/profile_${userId}.${ext}`;
+
+                try {
+                    const response = await fetch(photoUrl, { method: 'GET' });
+                    if (response.ok) {
+                        currentPhotoFilename = `profile_${userId}.${ext}`; // store for delete
+                        return {
+                            exists: true,
+                            url: photoUrl,
+                            filename: currentPhotoFilename,
+                            format: ext.toUpperCase()
+                        };
+                    }
+                } catch (error) {
+                    console.error(`Error checking ${photoUrl}:`, error);
+                }
+            }
+
+            currentPhotoFilename = null;
+            return { exists: false };
+        }
+
+        async function Delete() {
+            if (!currentPhotoFilename) {
+                alert("No photo to delete.");
+                return;
+            }
+
+            const deleteUrl = `/Uploads/${currentPhotoFilename}`;
+
+            try {
+                const response = await fetch(deleteUrl, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    alert(`Photo "${currentPhotoFilename}" deleted successfully.`);
+                    // optionally refresh page/update UI to reflect deletion
+                    location.reload();
+                } else {
+                    const errorText = await response.text();
+                    alert(`Failed to delete photo: ${response.status} ${errorText}`);
+                }
+            } catch (error) {
+                alert(`Error deleting photo: ${error.message}`);
+            }
+        }
+    </script>
+</body>
+</html>

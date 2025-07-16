@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Server - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>SYSTEM DASHBOARD</h1>
+            <div class="subtitle">Welcome back, <span id="username">user</span>!</div>
+        </div>
+
+        <div class="message success">
+            <p>> Authentication successful</p>
+            <p>> Session established at: <span id="current-time"></span></p>
+            <p>> Access level: AUTHORIZED USER</p>
+        </div>
+
+        <div class="ascii-art">
+╔══════════════════════════════╗
+║         MAIN TERMINAL        ║
+║  ┌──────────┐  ┌──────────┐  ║
+║  │   FILE   │  │  SYSTEM  │  ║
+║  │  SYSTEM  │  │   APPS   │  ║
+║  └──────────┘  └──────────┘  ║
+╚══════════════════════════════╝
+        </div>
+
+        <ul class="menu">
+            <li><a href="upload-profile-photo.html">[1] PROFILE PHOTO UPLOAD SYSTEM - Upload and manage your photo</a></li>
+            <li><a href="profile-preview.html">[2] PHOTO PREVIEW - View delete or replace your profile photo</a></li>
+            <li><a href="update.html">[3] UPDATE USER DATA - Modify your account information</a></li>
+            <li><a href="apps.html">[4] APPLICATIONS - Execute server-side applications</a></li>
+            <li>
+                <form action="/logout" method="POST" style="display:inline;">
+                    <button type="submit" class="link-button">[5] LOGOUT - End current session</button>
+                </form>
+            </li>
+        </ul>
+
+        <div class="message">
+            <p>> System Resources: Available</p>
+            <p>> Profile Photo Quota: 1 photo (5MB max)</p>
+            <p>> CGI Scripts: 3 Available</p>
+        </div>
+
+        <div class="navigation">
+            <form action="/logout" method="POST" style="display:inline;">
+                <button type="submit" class="link-button">[LOGOUT]</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('current-time').textContent = new Date().toLocaleString();
+        document.addEventListener("DOMContentLoaded", () => {
+            fetch("/cgi-bin/get_username.php")
+                .then(res => {
+                    if (!res.ok) throw new Error("Network response was not ok");
+                    return res.json();
+                })
+                .then(data => {
+                    document.getElementById("username").textContent = data.username || "user";
+                })
+                .catch(err => {
+                    console.error("Error fetching username:", err);
+                    document.getElementById("username").textContent = "user";
+                });
+        });
+        fetch("/cgi-bin/get_username.php")
+        .then(res => res.json())
+        .then(data => {
+        if (data.username) {
+            document.getElementById("username").textContent = data.username;
+        } else {
+            window.location.href = "/docs/logged-out.html";
+        }
+        });
+    </script>
+</body>
+</html>
